@@ -11,7 +11,7 @@ Version:        1.0.5
 Release:        1%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Dynamically set the proxy and/or enable/disable repositories
 License:        GPLv2+
-URL:            https://github.com/gunther788/yum-plugin-proxy
+URL:            https://github.com/gunther788/dnf-plugin-proxy
 BuildArch:      noarch
 
 %if 0%{?tag:1}
