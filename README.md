@@ -54,14 +54,15 @@ and disable them, regardless of the other settings.
 
 ## Installation
 
-To ease the installation and configuration of this plugin, environment variables may be set to inject values into the
-configuration file:
+The configuration file at `/etc/yum/pluginconf.d/proxy.conf` can be generated as e.g. part of Kickstart before installing
+the package, so for CentOS 8 could have:
 
-The `%post` of the package contains:
 ```
-egrep -e "^proxy=" %{pluginconf} || echo "proxy=${PROXY_PLUGIN_PROXY}" >> %{pluginconf}
-egrep -e "^no_proxy=" %{pluginconf} || echo "no_proxy=${PROXY_PLUGIN_NO_PROXY}" >> %{pluginconf}
-egrep -e "^blacklistfiles=" %{pluginconf} || echo "blacklistfiles=${PROXY_PLUGIN_BLACKLISTFILES}" >> %{pluginconf}
+[main]
+enabled=1
+proxy=http://some.proxy.example.com:3128/
+no_proxy=example.com
+blacklistfiles=CentOS-AppStream,CentOS-Base,CentOS-CR,CentOS-Debuginfo,CentOS-Devel,CentOS-Extras,CentOS-HA,CentOS-Media,CentOS-PowerTools,CentOS-Sources,CentOS-Vault,CentOS-centosplus,CentOS-fasttrack,CentOS-Linux-AppStream,CentOS-Linux-BaseOS,CentOS-Linux-ContinuousRelease,CentOS-Linux-Debuginfo,CentOS-Linux-Devel,CentOS-Linux-Extras,CentOS-Linux-FastTrack,CentOS-Linux-HighAvailability,CentOS-Linux-Media,CentOS-Linux-Plus,CentOS-Linux-PowerTools,CentOS-Linux-Sources
 ```
 
 ## Environment Variables
