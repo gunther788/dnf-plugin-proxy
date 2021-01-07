@@ -8,7 +8,7 @@
 
 Name:           dnf-plugin-proxy
 Version:        1.0.6
-Release:        1%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
+Release:        2%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Dynamically set the proxy and/or enable/disable repositories
 License:        GPLv2+
 URL:            https://github.com/gunther788/dnf-plugin-proxy
@@ -34,7 +34,6 @@ criteria. Processes the already enabled repositories mid-flight and updates the
 %install
 install -m644 -D -p proxy.py   %{buildroot}%{pluginpath}/proxy.py
 install -m644 -D -p proxy.conf %{buildroot}%{pluginconf}/proxy.conf
-exit 0    # to skip the bundling of the .pyc files
 
 
 %prep
@@ -53,11 +52,13 @@ exit 0    # to skip the bundling of the .pyc files
 %license LICENSE
 %doc README.md
 %{pluginpath}/proxy.py
+%{pluginpath}/__pycache__/proxy.*.pyc
 %config(noreplace) %ghost %{pluginconf}/proxy.conf
 
 
 %changelog
-* Thu Jan 07 2021 Frank Tropschuh <gunther@idoru.ch> - 1.0.6-1
+* Thu Jan 07 2021 Frank Tropschuh <gunther@idoru.ch> - 1.0.6-2
+- including byte-compiled artefacts
 - using tags, dropping post again
 
 * Thu Jan 07 2021 Frank Tropschuh <gunther@idoru.ch> - 1.0.5-0
