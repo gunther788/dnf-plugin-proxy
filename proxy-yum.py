@@ -31,6 +31,11 @@ def init_hook(conduit):
             conduit.info(3, 'Using "%s" = "%s"' % (e, os.environ[e]))
             proxy = os.environ[e]
 
+    for e in ['no_proxy']:
+        if e in os.environ:
+            conduit.info(3, 'Using "%s" = "%s"' % (e, os.environ[e]))
+            no_proxy = os.environ[e]
+
     conduit.info(3, 'Using proxy "%s", no_proxy "%s"' % (proxy, no_proxy))
     conduit.info(3, 'Blacklist')
     for b in blacklistfiles:
@@ -69,22 +74,44 @@ def prereposetup_hook(conduit):
     
     for repo in conduit.getRepos().listEnabled():
 
-        # if a repo is hosted on Foreman, make sure proxy is disabled
-        if in_house_repo(repo):
-            conduit.info(3, 'Ignoring proxy for "%s"' % (repo.name))
-            repo.proxy = '_none_'
+        # skip if a repo is already disabled anyway
+        if bool(repo.enabled) == False:
+            if verbose:
+                print('Repo "%s" is already disabled' % (repo.name))
 
         # if a repo is defined in a repo file that is on the blacklist, disable it
-        elif ignore_repo(repo):
-            conduit.info(3, 'Disabled repo "%s", repo file blacklisted' % (repo.name))
+        elif self.ignore_repo(repo):
+            if verbose:
+                print('Disabled repo "%s", repo file blacklisted' % (repo.name))
             repo.enabled = False
+
+        # we have no definition of what's in-house or not
+        elif no_proxy == '':
+
+            if proxy is not None and proxy.startswith('http'):
+                if verbose:
+                    print('Set proxy for "%s"' % (repo.name))
+                repo.proxy = proxy
+
+            else:
+                if verbose:
+                    print('Disable proxy for "%s"' % (repo.name))
+                repo.proxy = ''
+
+        # if a repo is hosted internally, make sure proxy is disabled
+        elif self.in_house_repo(repo):
+            if verbose:
+                print('Ignoring proxy for "%s"' % (repo.name))
+            repo.proxy = ''
 
         # if a repo is not in-house but we have a proxy, use it
         elif proxy is not None and proxy.startswith('http'):
-            conduit.info(3, 'Set proxy for "%s", not in-house' % (repo.name))
+            if verbose:
+                print('Set proxy for "%s", not in-house' % (repo.name))
             repo.proxy = proxy
 
         # if a repo is not in-house but we don't have a proxy, disable it
         else:
-            conduit.info(3, 'Disabled repo "%s", not in-house and missing proxy' % (repo.name))
+            if verbose:
+                print('Disabled repo "%s", not in-house and missing proxy' % (repo.name))
             repo.enabled = False
