@@ -13,6 +13,7 @@ Summary:        Dynamically set the proxy and/or enable/disable repositories
 License:        GPLv2+
 URL:            https://github.com/gunther788/dnf-plugin-proxy
 BuildArch:      noarch
+BuildRequires:  python3-rpm-macros
 
 %if 0%{?tag:1}
 Source0:        %{url}/archive/%{version}.tar.gz#/%{name}-%{version}.tar.gz
@@ -56,15 +57,15 @@ exit 0    # to skip the bundling of the .pyc files
 
 
 %changelog
-* Thu Jan 07 2021 Frank Tropschuh <gunther@idoru.ch> - 1.0.6-0
-- using tags
+* Thu Jan 07 2021 Frank Tropschuh <gunther@idoru.ch> - 1.0.6-1
+- using tags, dropping post again
 
 * Thu Jan 07 2021 Frank Tropschuh <gunther@idoru.ch> - 1.0.5-0
 - split into yum-plugin-proxy and dnf-plugin-proxy github repos
 
 * Thu Jan 07 2021 Frank Tropschuh <gunther@idoru.ch> - 1.0.4-4
 - several fixes for handling configuration parameters
-- %post to initialize config file
+- post to initialize config file
 
 * Wed Jan 06 2021 Frank Tropschuh <gunther@idoru.ch> - 1.0.4-1
 - onboarded F33, cleanup of python handling
