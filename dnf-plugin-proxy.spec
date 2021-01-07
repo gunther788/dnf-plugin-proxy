@@ -52,7 +52,9 @@ install -m644 -D -p proxy.conf %{buildroot}%{pluginconf}/proxy.conf
 %license LICENSE
 %doc README.md
 %{pluginpath}/proxy.py
-%{pluginpath}/__pycache__/proxy.*.pyc
+%if 0%{?rhel} >= 8
+%{pluginpath}/__pycache__/proxy.cpython-%{python3_version_nodots}{,.opt-?}.pyc
+%endif
 %config(noreplace) %ghost %{pluginconf}/proxy.conf
 
 
