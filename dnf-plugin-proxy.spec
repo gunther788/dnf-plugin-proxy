@@ -7,7 +7,7 @@
 %global pluginconf %{_sysconfdir}/yum/pluginconf.d
 
 Name:           dnf-plugin-proxy
-Version:        1.0.5
+Version:        1.0.6
 Release:        1%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Dynamically set the proxy and/or enable/disable repositories
 License:        GPLv2+
@@ -55,6 +55,9 @@ install -m644 -D -p proxy.conf %{buildroot}%{pluginconf}/proxy.conf
 
 
 %changelog
+* Thu Jan 07 2021 Frank Tropschuh <gunther@idoru.ch> - 1.0.6-0
+- using tags
+
 * Thu Jan 07 2021 Frank Tropschuh <gunther@idoru.ch> - 1.0.5-0
 - split into yum-plugin-proxy and dnf-plugin-proxy github repos
 
