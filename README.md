@@ -40,6 +40,7 @@ The behaviour of these settings for each repository, in the order they are evalu
 | enabled    | no match (2) | *empty*     | set        | repo is considered off-site and disabled (missing proxy) |
 
 (1) a match of at least one of the `no_proxy` entries and the fqdn in the repo url
+
 (2) no match of any of the `no_proxy` entries and the fqdn in the repo url
 
 ## Blacklistfiles
