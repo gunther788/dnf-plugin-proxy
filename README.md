@@ -31,13 +31,13 @@ The behaviour of these settings for each repository, in the order they are evalu
 
 | repo state | repo url     | `proxy`     | `no_proxy` | result                              |
 | ---------- | ------------ | ----------- | ---------- | ----------------------------------- |
-| *disabled* | any          | any         | any        | repo is ignored                     |
-| *disabled by blacklist* | any | any | any | repo is disabled by blacklisting the repo file |
-| enabled    | any          | *set*       | *empty*    | all requests are made via the proxy |
-| enabled    | any          | *empty*     | *empty*    | plugin does not affect behaviour    |
-| enabled    | *match (1)*  | any         | set        | repo is considered in-house and enabled, proxy is disabled |
-| enabled    | *no match (2)* | *set*     | set        | repo is considered off-site and enabled via proxy |
-| enabled    | no match (2) | *empty*     | set        | repo is considered off-site and disabled (missing proxy) |
+| **disabled** | any          | any         | any        | repo is ignored                     |
+| **disabled by blacklist** | any | any | any | repo is disabled by blacklisting the repo file |
+| enabled    | any          | **set**       | **empty**    | all requests are made via the proxy |
+| enabled    | any          | **empty**     | **empty**    | plugin does not affect behaviour    |
+| enabled    | **match (1)**  | any         | set        | repo is considered in-house and enabled, proxy is disabled |
+| enabled    | **no match (2)** | **set**     | set        | repo is considered off-site and enabled via proxy |
+| enabled    | no match (2) | **empty**     | set        | repo is considered off-site and disabled (missing proxy) |
 
 (1) a match of at least one of the `no_proxy` entries and the fqdn in the repo url
 
