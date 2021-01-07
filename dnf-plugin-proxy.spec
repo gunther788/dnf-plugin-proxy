@@ -33,6 +33,7 @@ criteria. Processes the already enabled repositories mid-flight and updates the
 %install
 install -m644 -D -p proxy.py   %{buildroot}%{pluginpath}/proxy.py
 install -m644 -D -p proxy.conf %{buildroot}%{pluginconf}/proxy.conf
+exit 0    # to skip the bundling of the .pyc files
 
 
 %prep
