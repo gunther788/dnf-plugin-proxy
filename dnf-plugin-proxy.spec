@@ -1,7 +1,7 @@
-%global commit0 fba170d9b12d97b2d4db76f12533baaf1a321adc
-%global date 20210107
-%global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
-#global tag 1
+#global commit0 8a763340ac51ff2fcaa2fc3c50e40fd53f2fd1c0
+#global date 20210107
+#global shortcommit0 %(c=%{commit0}; echo ${c:0:7})
+%global tag 1
 
 %global pluginpath %{python3_sitelib}/dnf-plugins
 %global pluginconf %{_sysconfdir}/yum/pluginconf.d
@@ -23,14 +23,17 @@ Source0:        %{url}/archive/%{commit0}.tar.gz#/%{name}-%{shortcommit0}.tar.gz
 Provides:       yum-plugin-proxy = %{version}-%{release}
 Obsoletes:      yum-plugin-proxy <= %{version}-%{release}
 
+
 %description
 Dynamically set the proxy and/or enable/disable repositories based on various
 criteria. Processes the already enabled repositories mid-flight and updates the
 "enabled" and "proxy" parameters.
 
+
 %install
 install -m644 -D -p proxy-dnf.py %{buildroot}%{pluginpath}/proxy.py
 install -m644 -D -p proxy.conf %{buildroot}%{pluginconf}/proxy.conf
+
 
 %prep
 %if 0%{?tag:1}
@@ -39,23 +42,17 @@ install -m644 -D -p proxy.conf %{buildroot}%{pluginconf}/proxy.conf
 %autosetup -p1 -n %{name}-%{commit0}
 %endif
 
+
 %build
 # Nothing to build
+
 
 %files
 %license LICENSE
 %doc README.md
 %{pluginpath}/proxy.py
-%config(noreplace) %{pluginconf}/proxy.conf
+%config(noreplace) %ghost %{pluginconf}/proxy.conf
 
-%post
-# copy install-time environment variables into the config file, this provides
-# a mechanism to automate the installation during kickstart
-# if unset, we end up initializing the plugin with all possible variables
-egrep -e "^proxy=" %{pluginconf} || echo "proxy=${PROXY_PLUGIN_PROXY}" >> %{pluginconf}
-egrep -e "^no_proxy=" %{pluginconf} || echo "no_proxy=${PROXY_PLUGIN_NO_PROXY}" >> %{pluginconf}
-egrep -e "^blacklistfiles=" %{pluginconf} || echo "blacklistfiles=${PROXY_PLUGIN_BLACKLISTFILES}" >> %{pluginconf}
-exit 0
 
 %changelog
 * Thu Jan 07 2021 Frank Tropschuh <gunther@idoru.ch> - 1.0.5-0
