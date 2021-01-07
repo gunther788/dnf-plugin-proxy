@@ -1,25 +1,19 @@
 
-Version:        1.0.4
-Release:        4%{?dist}
+Name:           dnf-plugin-proxy
+Version:        1.0.5
+Release:        0%{?dist}
 Summary:        Dynamically set the proxy and/or enable/disable repositories
 License:        GPLv2+
 URL:            https://github.com/gunther788/yum-plugin-proxy
+Source0:        proxy.py
 Source1:        proxy.conf
 BuildArch:      noarch
-
-# conditional on the use of yum vs. dnf
-%if 0%{?rhel} >= 8 || 0%{?fedora} >= 22
-Name:           dnf-plugin-proxy
-Source0:        proxy-dnf.py
 Provides:       yum-plugin-proxy = %{version}
 Obsoletes:      yum-plugin-proxy <= %{version}
+
 %define pluginpath %{python3_sitelib}/dnf-plugins
-%else
-Name:           yum-plugin-proxy
-Source0:        proxy-yum.py
-%define pluginpath /usr/lib/yum-plugins
-%endif
 %define pluginconf /etc/yum/pluginconf.d/proxy.conf
+
 
 %description
 Dynamically set the proxy and/or enable/disable repositories based on various criteria. Processes
@@ -53,7 +47,8 @@ exit 0
 
 
 %changelog
-* Thu Jan 07 2021 Frank Tropschuh <gunther@idoru.ch> - 1.0.4-4
+* Thu Jan 07 2021 Frank Tropschuh <gunther@idoru.ch> - 1.0.5-0
+- split into yum-plugin-proxy and dnf-plugin-proxy github repos
 - several fixes for handling configuration parameters
 - %post to initialize config file
 
