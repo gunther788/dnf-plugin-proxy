@@ -8,7 +8,7 @@
 
 Name:           dnf-plugin-proxy
 Version:        1.1.0
-Release:        1%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
+Release:        2%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Dynamically set the proxy and/or enable/disable repositories
 License:        GPLv2+
 URL:            https://github.com/gunther788/dnf-plugin-proxy
@@ -75,7 +75,8 @@ fi
 
 
 %changelog
-* Wed Jan 13 2021 Frank Tropschuh <gunther@idoru.ch> - 1.1.0-1
+* Wed Jan 13 2021 Frank Tropschuh <gunther@idoru.ch> - 1.1.0-2
+- beautifying the output
 - verbose output, actually remove the repo files
 - add a trigger that removes all repo files in the blacklist
 
