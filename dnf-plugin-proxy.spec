@@ -8,7 +8,7 @@
 
 Name:           dnf-plugin-proxy
 Version:        1.1.0
-Release:        2%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
+Release:        3%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Dynamically set the proxy and/or enable/disable repositories
 License:        GPLv2+
 URL:            https://github.com/gunther788/dnf-plugin-proxy
@@ -66,7 +66,7 @@ if [ -f /etc/yum/pluginconf.d/proxy.conf ]; then
 	for base in $(echo ${blacklistfiles} | tr "," "\n"); do
 	    repo="/etc/yum.repos.d/${base}.repo"
 	    if [ -f "${repo}" ]; then
-		echo "  Removing         : ${repo}."
+		echo "  Removing         : ${repo}"
 		rm -f "${repo}"
 	    fi
 	done
@@ -75,7 +75,7 @@ fi
 
 
 %changelog
-* Wed Jan 13 2021 Frank Tropschuh <gunther@idoru.ch> - 1.1.0-2
+* Wed Jan 13 2021 Frank Tropschuh <gunther@idoru.ch> - 1.1.0-3
 - beautifying the output
 - verbose output, actually remove the repo files
 - add a trigger that removes all repo files in the blacklist
