@@ -7,8 +7,8 @@
 %global pluginconf %{_sysconfdir}/yum/pluginconf.d
 
 Name:           dnf-plugin-proxy
-Version:        1.0.6
-Release:        2%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
+Version:        1.1.0
+Release:        0%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Dynamically set the proxy and/or enable/disable repositories
 License:        GPLv2+
 URL:            https://github.com/gunther788/dnf-plugin-proxy
@@ -29,6 +29,7 @@ Obsoletes:      yum-plugin-proxy <= %{version}-%{release}
 Dynamically set the proxy and/or enable/disable repositories based on various
 criteria. Processes the already enabled repositories mid-flight and updates the
 "enabled" and "proxy" parameters.
+Nukes repo files that should not be used when we have internal repositories.
 
 
 %install
@@ -58,7 +59,21 @@ install -m644 -D -p proxy.conf %{buildroot}%{pluginconf}/proxy.conf
 %config(noreplace) %ghost %{pluginconf}/proxy.conf
 
 
+%triggerin -p /usr/bin/bash -- centos-release centos-linux-repos
+if [ -f /etc/yum/pluginconf.d/proxy.conf ]; then
+    source <(grep = /etc/yum/pluginconf.d/proxy.conf | tr -d " ")
+    if [ -n "${blacklistfiles}" ]; then
+       for base in $(echo ${blacklistfiles} | tr "," "\n"); do
+           echo ">> removing /etc/yum.repos.d/${base}.repo"
+       done
+    fi
+fi
+
+
 %changelog
+* Wed Jan 13 2021 Frank Tropschuh <gunther@idoru.ch> - 1.1.0-0
+- add a trigger that removes all repo files in the blacklist
+
 * Thu Jan 07 2021 Frank Tropschuh <gunther@idoru.ch> - 1.0.6-2
 - including byte-compiled artefacts
 - using tags, dropping post again
