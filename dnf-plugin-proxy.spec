@@ -8,7 +8,7 @@
 
 Name:           dnf-plugin-proxy
 Version:        1.1.0
-Release:        0%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
+Release:        1%{!?tag:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Dynamically set the proxy and/or enable/disable repositories
 License:        GPLv2+
 URL:            https://github.com/gunther788/dnf-plugin-proxy
@@ -59,19 +59,24 @@ install -m644 -D -p proxy.conf %{buildroot}%{pluginconf}/proxy.conf
 %config(noreplace) %ghost %{pluginconf}/proxy.conf
 
 
-%triggerin -p /usr/bin/bash -- centos-release centos-linux-repos
+%triggerin -p /usr/bin/bash -- centos-release centos-linux-repos fedora-repos
 if [ -f /etc/yum/pluginconf.d/proxy.conf ]; then
     source <(grep = /etc/yum/pluginconf.d/proxy.conf | tr -d " ")
     if [ -n "${blacklistfiles}" ]; then
-       for base in $(echo ${blacklistfiles} | tr "," "\n"); do
-           echo ">> removing /etc/yum.repos.d/${base}.repo"
-       done
+	for base in $(echo ${blacklistfiles} | tr "," "\n"); do
+	    repo="/etc/yum.repos.d/${base}.repo"
+	    if [ -f "${repo}" ]; then
+		echo "  Removing         : ${repo}."
+		rm -f "${repo}"
+	    fi
+	done
     fi
 fi
 
 
 %changelog
-* Wed Jan 13 2021 Frank Tropschuh <gunther@idoru.ch> - 1.1.0-0
+* Wed Jan 13 2021 Frank Tropschuh <gunther@idoru.ch> - 1.1.0-1
+- verbose output, actually remove the repo files
 - add a trigger that removes all repo files in the blacklist
 
 * Thu Jan 07 2021 Frank Tropschuh <gunther@idoru.ch> - 1.0.6-2
